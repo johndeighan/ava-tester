@@ -1,5 +1,5 @@
 {
-	"name": "ava-tester",
+	"name": "@jdeighan/ava-tester",
 	"type": "module",
 	"version": "1.0.0",
 	"description": "enhancement of ava unit testing",

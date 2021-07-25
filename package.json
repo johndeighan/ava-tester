@@ -7,6 +7,9 @@
 	"exports": {
 		".": "./AvaTester.js"
 	},
+	"engines": {
+		"node": ">=12.0.0"
+		},
 	"directories": {
 		"test": "test"
 	},
@@ -20,6 +23,8 @@
 		"url": "git+https://github.com/johndeighan/ava-tester.git"
 	},
 	"keywords": [
+		"ava",
+		"unit testing",
 		"coffeescript"
 	],
 	"author": "John Deighan",

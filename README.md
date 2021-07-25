@@ -1,4 +1,5 @@
 Project: AvaTester
+==================
 
 The point of AvaTester is to simplify unit testing:
 
@@ -13,8 +14,9 @@ The point of AvaTester is to simplify unit testing:
 5. You can define a `transformValue()` method
 
 Examples (coffeescript syntax):
----------
+-------------------------------
 
+```coffeescript
 import {AvaTester} from 'ava-tester'
 
 tester = new AvaTester()
@@ -31,9 +33,12 @@ tester.different 13, ['a'], ['a']
 
 lItems = ['a', 'b']
 tester.same 16, lItems, lItems
+```
 
-# --- Test creating custom tester -------------------------
+Test creating custom tester
+---------------------------
 
+```coffeescript
 class CapTester extends AvaTester
 
 	transformValue: (input) ->
@@ -44,9 +49,12 @@ capTester = new CapTester()
 capTester.equal 26, 'abc', 'ABC'
 capTester.equal 27, 'ABC', 'ABC'
 capTester.notequal 28, 'abc', 'abc'
+```
 
-# --- Test string normalization --------------------------
+Test string normalization
+-------------------------
 
+```coffeescript
 tester.equal 31, """
 		line 1
 
@@ -58,9 +66,12 @@ tester.equal 31, """
 		line 2
 		line 3
 		"""
+```
 
 Available Test Methods:
+-----------------------
 
+```text
 truthy
 falsy
 equal
@@ -68,3 +79,4 @@ notequal
 same
 different
 fails
+```

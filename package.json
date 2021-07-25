@@ -1,0 +1,37 @@
+{
+	"name": "ava-tester",
+	"type": "module",
+	"version": "1.0.0",
+	"description": "enhancement of ava unit testing",
+	"main": "./AvaTester.js",
+	"exports": {
+		".": "./AvaTester.js"
+	},
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"build": "cls && coffee -c .",
+		"pretest": "cls && coffee -c .",
+		"test": "ava ./test/*.test.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/johndeighan/ava-tester.git"
+	},
+	"keywords": [
+		"coffeescript"
+	],
+	"author": "John Deighan",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/johndeighan/ava-tester/issues"
+	},
+	"homepage": "https://github.com/johndeighan/ava-tester#readme",
+	"dependencies": {
+		"ava": "^3.15.0"
+	},
+	"devDependencies": {
+		"coffeescript": "^2.5.1"
+	}
+}

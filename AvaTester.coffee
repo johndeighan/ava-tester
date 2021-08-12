@@ -3,27 +3,20 @@
 import {strict as assert} from 'assert'
 import test from 'ava'
 
-# --- Define some utilities
-#        (later, get from coffee_utils.js)
-
-`const undef = undefined`
-defined = (x) -> x!=undef && x!=null
-say = (x, label='') ->
-	if label then console.log label
-	if typeof x == 'object'
-		console.dir x
-	else
-		console.log x
-isString = (x) -> return typeof x == 'string' || x instanceof String
-isFunction = (x) -> return typeof x == 'function'
-isInteger = (x) -> return Number.isInteger(x)
-stringToArray = (x) -> return if x==undef then [] else x.split(/\r?\n/)
+import {
+	undef,
+	say,
+	isString,
+	isFunction,
+	isInteger,
+	stringToArray,
+	} from '@jdeighan/coffee-utils'
 
 # ---------------------------------------------------------------------------
 
 export class AvaTester
 
-	constructor: (whichTest='deepEqual') ->
+	constructor: (whichTest='deepEqual', @fulltest=false) ->
 		@hFound = {}
 		@setWhichTest whichTest
 		@justshow = false
@@ -55,7 +48,10 @@ export class AvaTester
 	# ........................................................................
 
 	equal: (lineNum, input, expected, just_show=false) ->
-		@setWhichTest 'deepEqual'
+		if isString(input) && isString(expected)
+			@setWhichTest 'is'
+		else
+			@setWhichTest 'deepEqual'
 		@test lineNum, input, expected, just_show
 
 	# ........................................................................
@@ -145,6 +141,9 @@ export class AvaTester
 	# ........................................................................
 
 	getLineNum: (lineNum) ->
+
+		if @fulltest && (lineNum < 0)
+			error "AvaTester(): negative line number during full test!!!"
 
 		# --- patch lineNum to avoid duplicates
 		while @hFound[lineNum]

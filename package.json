@@ -36,8 +36,5 @@
 	"dependencies": {
 		"@jdeighan/coffee-utils": "^1.0.15",
 		"ava": "^3.15.0"
-	},
-	"devDependencies": {
-		"coffeescript": "^2.5.1"
 	}
 }

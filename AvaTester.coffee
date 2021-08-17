@@ -124,36 +124,34 @@ export class AvaTester
 
 		assert isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer"
 
-		lineNum = @getLineNum(lineNum)
+		lineNum = @getLineNum(lineNum)   # corrects for duplicates
+		try
+			got = @normalize(@transformValue(input))
+			got_error = false
+		catch err
+			got_error = true
 		expected = @normalize(expected)
+
+		if @justshow
+			say "line #{lineNum}"
+			if got_error
+				say "GOT ERROR"
+			else
+				say result, "GOT:"
+			say expected, "EXPECTED:"
+			return
 
 		# --- We need to save this here because in the tests themselves,
 		#     'this' won't be correct
 		whichTest = @whichTest
 
-		if (whichTest == 'throws')
-			if @justshow
-				say "line #{lineNum}"
-				try
-					got = @transformValue(input)
-					say result, "GOT:"
-				catch err
-					say "GOT ERROR"
-				say "EXPECTED ERROR"
+		if lineNum < 0
+			test.only "line #{lineNum}", (t) ->
+				t[whichTest] got, expected
+			@testing = false
 		else
-			got = @normalize(@transformValue(input))
-			if @justshow
-				say "line #{lineNum}"
-				say got, "GOT:"
-				say expected, "EXPECTED:"
-			else
-				if lineNum < 0
-					test.only "line #{lineNum}", (t) ->
-						t[whichTest] got, expected
-					@testing = false
-				else
-					test "line #{lineNum}", (t) ->
-						t[whichTest] got, expected
+			test "line #{lineNum}", (t) ->
+				t[whichTest] got, expected
 		return
 
 	# ........................................................................

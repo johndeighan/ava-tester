@@ -128,46 +128,42 @@ export var AvaTester = class AvaTester {
 
   // ........................................................................
   test(lineNum, input, expected) {
-    var err, got, whichTest;
+    var err, got, got_error, whichTest;
     if (!this.testing || (this.maxLineNum && (lineNum > this.maxLineNum))) {
       return;
     }
     assert(isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer");
-    lineNum = this.getLineNum(lineNum);
+    lineNum = this.getLineNum(lineNum); // corrects for duplicates
+    try {
+      got = this.normalize(this.transformValue(input));
+      got_error = false;
+    } catch (error1) {
+      err = error1;
+      got_error = true;
+    }
     expected = this.normalize(expected);
+    if (this.justshow) {
+      say(`line ${lineNum}`);
+      if (got_error) {
+        say("GOT ERROR");
+      } else {
+        say(result, "GOT:");
+      }
+      say(expected, "EXPECTED:");
+      return;
+    }
     // --- We need to save this here because in the tests themselves,
     //     'this' won't be correct
     whichTest = this.whichTest;
-    if (whichTest === 'throws') {
-      if (this.justshow) {
-        say(`line ${lineNum}`);
-        try {
-          got = this.transformValue(input);
-          say(result, "GOT:");
-        } catch (error1) {
-          err = error1;
-          say("GOT ERROR");
-        }
-        say("EXPECTED ERROR");
-      }
+    if (lineNum < 0) {
+      test.only(`line ${lineNum}`, function(t) {
+        return t[whichTest](got, expected);
+      });
+      this.testing = false;
     } else {
-      got = this.normalize(this.transformValue(input));
-      if (this.justshow) {
-        say(`line ${lineNum}`);
-        say(got, "GOT:");
-        say(expected, "EXPECTED:");
-      } else {
-        if (lineNum < 0) {
-          test.only(`line ${lineNum}`, function(t) {
-            return t[whichTest](got, expected);
-          });
-          this.testing = false;
-        } else {
-          test(`line ${lineNum}`, function(t) {
-            return t[whichTest](got, expected);
-          });
-        }
-      }
+      test(`line ${lineNum}`, function(t) {
+        return t[whichTest](got, expected);
+      });
     }
   }
 

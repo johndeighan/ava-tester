@@ -21,6 +21,13 @@ export class AvaTester
 		@setWhichTest whichTest
 		@justshow = false
 		@testing = true
+		@maxLineNum = undef
+
+	# ........................................................................
+
+	setMaxLineNum: (n) ->
+
+		@maxLineNum = n
 
 	# ........................................................................
 
@@ -100,7 +107,7 @@ export class AvaTester
 
 	test: (lineNum, input, expected, just_show=false) ->
 
-		if not @testing
+		if not @testing || (@maxLineNum && (lineNum > @maxLineNum))
 			return
 
 		assert isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer"

@@ -23,6 +23,12 @@ export var AvaTester = class AvaTester {
     this.setWhichTest(whichTest);
     this.justshow = false;
     this.testing = true;
+    this.maxLineNum = undef;
+  }
+
+  // ........................................................................
+  setMaxLineNum(n) {
+    return this.maxLineNum = n;
   }
 
   // ........................................................................
@@ -113,7 +119,7 @@ export var AvaTester = class AvaTester {
   // ........................................................................
   test(lineNum, input, expected, just_show = false) {
     var err, got, whichTest;
-    if (!this.testing) {
+    if (!this.testing || (this.maxLineNum && (lineNum > this.maxLineNum))) {
       return;
     }
     assert(isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer");

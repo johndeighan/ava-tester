@@ -25,6 +25,18 @@ export class AvaTester
 
 	# ........................................................................
 
+	justshow: (flag) ->
+
+		@justshow = flag
+
+	# ........................................................................
+
+	just_show: (flag) ->
+
+		@justshow = flag
+
+	# ........................................................................
+
 	setMaxLineNum: (n) ->
 
 		@maxLineNum = n
@@ -42,50 +54,50 @@ export class AvaTester
 
 	# ........................................................................
 
-	truthy: (lineNum, input, expected, just_show=false) ->
+	truthy: (lineNum, input, expected) ->
 		@setWhichTest 'truthy'
-		@test lineNum, input, expected, just_show
+		@test lineNum, input, expected
 
 	# ........................................................................
 
-	falsy: (lineNum, input, expected, just_show=false) ->
+	falsy: (lineNum, input, expected) ->
 		@setWhichTest 'falsy'
-		@test lineNum, input, expected, just_show
+		@test lineNum, input, expected
 
 	# ........................................................................
 
-	equal: (lineNum, input, expected, just_show=false) ->
+	equal: (lineNum, input, expected) ->
 		if isString(input) && isString(expected)
 			@setWhichTest 'is'
 		else
 			@setWhichTest 'deepEqual'
-		@test lineNum, input, expected, just_show
+		@test lineNum, input, expected
 
 	# ........................................................................
 
-	notequal: (lineNum, input, expected, just_show=false) ->
+	notequal: (lineNum, input, expected) ->
 		@setWhichTest 'notDeepEqual'
-		@test lineNum, input, expected, just_show
+		@test lineNum, input, expected
 
 	# ........................................................................
 
-	same: (lineNum, input, expected, just_show=false) ->
+	same: (lineNum, input, expected) ->
 		@setWhichTest 'is'
-		@test lineNum, input, expected, just_show
+		@test lineNum, input, expected
 
 	# ........................................................................
 
-	different: (lineNum, input, expected, just_show=false) ->
+	different: (lineNum, input, expected) ->
 		@setWhichTest 'not'
-		@test lineNum, input, expected, just_show
+		@test lineNum, input, expected
 
 	# ........................................................................
 
-	fails: (lineNum, input, expected, just_show=false) ->
+	fails: (lineNum, input, expected) ->
 		if (expected != undef)
 			error "AvaTester.fails(): expected value not allowed"
 		@setWhichTest 'throws'
-		@test lineNum, input, expected, just_show
+		@test lineNum, input, expected
 
 	# ........................................................................
 
@@ -105,13 +117,12 @@ export class AvaTester
 
 	# ........................................................................
 
-	test: (lineNum, input, expected, just_show=false) ->
+	test: (lineNum, input, expected) ->
 
 		if not @testing || (@maxLineNum && (lineNum > @maxLineNum))
 			return
 
 		assert isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer"
-		@justshow = just_show
 
 		lineNum = @getLineNum(lineNum)
 		expected = @normalize(expected)

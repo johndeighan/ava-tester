@@ -27,6 +27,16 @@ export var AvaTester = class AvaTester {
   }
 
   // ........................................................................
+  justshow(flag) {
+    return this.justshow = flag;
+  }
+
+  // ........................................................................
+  just_show(flag) {
+    return this.justshow = flag;
+  }
+
+  // ........................................................................
   setMaxLineNum(n) {
     return this.maxLineNum = n;
   }
@@ -42,52 +52,52 @@ export var AvaTester = class AvaTester {
   }
 
   // ........................................................................
-  truthy(lineNum, input, expected, just_show = false) {
+  truthy(lineNum, input, expected) {
     this.setWhichTest('truthy');
-    return this.test(lineNum, input, expected, just_show);
+    return this.test(lineNum, input, expected);
   }
 
   // ........................................................................
-  falsy(lineNum, input, expected, just_show = false) {
+  falsy(lineNum, input, expected) {
     this.setWhichTest('falsy');
-    return this.test(lineNum, input, expected, just_show);
+    return this.test(lineNum, input, expected);
   }
 
   // ........................................................................
-  equal(lineNum, input, expected, just_show = false) {
+  equal(lineNum, input, expected) {
     if (isString(input) && isString(expected)) {
       this.setWhichTest('is');
     } else {
       this.setWhichTest('deepEqual');
     }
-    return this.test(lineNum, input, expected, just_show);
+    return this.test(lineNum, input, expected);
   }
 
   // ........................................................................
-  notequal(lineNum, input, expected, just_show = false) {
+  notequal(lineNum, input, expected) {
     this.setWhichTest('notDeepEqual');
-    return this.test(lineNum, input, expected, just_show);
+    return this.test(lineNum, input, expected);
   }
 
   // ........................................................................
-  same(lineNum, input, expected, just_show = false) {
+  same(lineNum, input, expected) {
     this.setWhichTest('is');
-    return this.test(lineNum, input, expected, just_show);
+    return this.test(lineNum, input, expected);
   }
 
   // ........................................................................
-  different(lineNum, input, expected, just_show = false) {
+  different(lineNum, input, expected) {
     this.setWhichTest('not');
-    return this.test(lineNum, input, expected, just_show);
+    return this.test(lineNum, input, expected);
   }
 
   // ........................................................................
-  fails(lineNum, input, expected, just_show = false) {
+  fails(lineNum, input, expected) {
     if (expected !== undef) {
       error("AvaTester.fails(): expected value not allowed");
     }
     this.setWhichTest('throws');
-    return this.test(lineNum, input, expected, just_show);
+    return this.test(lineNum, input, expected);
   }
 
   // ........................................................................
@@ -117,13 +127,12 @@ export var AvaTester = class AvaTester {
   }
 
   // ........................................................................
-  test(lineNum, input, expected, just_show = false) {
+  test(lineNum, input, expected) {
     var err, got, whichTest;
     if (!this.testing || (this.maxLineNum && (lineNum > this.maxLineNum))) {
       return;
     }
     assert(isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer");
-    this.justshow = just_show;
     lineNum = this.getLineNum(lineNum);
     expected = this.normalize(expected);
     // --- We need to save this here because in the tests themselves,

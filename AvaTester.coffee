@@ -142,18 +142,18 @@ export class AvaTester
 				say "EXPECTED ERROR"
 		else
 			got = @normalize(@transformValue(input))
-			if lineNum < 0
-				if @justshow
-					say "line #{lineNum}"
-					say got, "GOT:"
-					say expected, "EXPECTED:"
-				else
+			if @justshow
+				say "line #{lineNum}"
+				say got, "GOT:"
+				say expected, "EXPECTED:"
+			else
+				if lineNum < 0
 					test.only "line #{lineNum}", (t) ->
 						t[whichTest] got, expected
-				@testing = false
-			else
-				test "line #{lineNum}", (t) ->
-					t[whichTest] got, expected
+					@testing = false
+				else
+					test "line #{lineNum}", (t) ->
+						t[whichTest] got, expected
 		return
 
 	# ........................................................................

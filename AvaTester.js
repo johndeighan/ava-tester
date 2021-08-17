@@ -152,21 +152,21 @@ export var AvaTester = class AvaTester {
       }
     } else {
       got = this.normalize(this.transformValue(input));
-      if (lineNum < 0) {
-        if (this.justshow) {
-          say(`line ${lineNum}`);
-          say(got, "GOT:");
-          say(expected, "EXPECTED:");
-        } else {
+      if (this.justshow) {
+        say(`line ${lineNum}`);
+        say(got, "GOT:");
+        say(expected, "EXPECTED:");
+      } else {
+        if (lineNum < 0) {
           test.only(`line ${lineNum}`, function(t) {
             return t[whichTest](got, expected);
           });
+          this.testing = false;
+        } else {
+          test(`line ${lineNum}`, function(t) {
+            return t[whichTest](got, expected);
+          });
         }
-        this.testing = false;
-      } else {
-        test(`line ${lineNum}`, function(t) {
-          return t[whichTest](got, expected);
-        });
       }
     }
   }

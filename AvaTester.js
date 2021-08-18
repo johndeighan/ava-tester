@@ -92,12 +92,35 @@ export var AvaTester = class AvaTester {
   }
 
   // ........................................................................
-  fails(lineNum, input, expected) {
-    if (expected !== undef) {
-      error("AvaTester.fails(): expected value not allowed");
+  fails(lineNum, func, expected) {
+    var err, ok;
+    assert(expected == null, "AvaTester: fails doesn't allow expected");
+    assert(isFunction(func), "AvaTester: fails requires a function");
+    try {
+      func();
+      ok = true;
+    } catch (error1) {
+      err = error1;
+      ok = false;
     }
-    this.setWhichTest('throws');
-    return this.test(lineNum, input, expected);
+    this.setWhichTest('falsy');
+    return this.test(lineNum, ok, expected);
+  }
+
+  // ........................................................................
+  succeeds(lineNum, func, expected) {
+    var err, ok;
+    assert(expected == null, "AvaTester: fails doesn't allow expected");
+    assert(isFunction(func), "AvaTester: fails requires a function");
+    try {
+      func();
+      ok = true;
+    } catch (error1) {
+      err = error1;
+      ok = false;
+    }
+    this.setWhichTest('truthy');
+    return this.test(lineNum, ok, expected);
   }
 
   // ........................................................................

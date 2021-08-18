@@ -93,11 +93,29 @@ export class AvaTester
 
 	# ........................................................................
 
-	fails: (lineNum, input, expected) ->
-		if (expected != undef)
-			error "AvaTester.fails(): expected value not allowed"
-		@setWhichTest 'throws'
-		@test lineNum, input, expected
+	fails: (lineNum, func, expected) ->
+		assert not expected?, "AvaTester: fails doesn't allow expected"
+		assert isFunction(func), "AvaTester: fails requires a function"
+		try
+			func()
+			ok = true
+		catch err
+			ok = false
+		@setWhichTest 'falsy'
+		@test lineNum, ok, expected
+
+	# ........................................................................
+
+	succeeds: (lineNum, func, expected) ->
+		assert not expected?, "AvaTester: fails doesn't allow expected"
+		assert isFunction(func), "AvaTester: fails requires a function"
+		try
+			func()
+			ok = true
+		catch err
+			ok = false
+		@setWhichTest 'truthy'
+		@test lineNum, ok, expected
 
 	# ........................................................................
 

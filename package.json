@@ -1,7 +1,7 @@
 {
 	"name": "@jdeighan/ava-tester",
 	"type": "module",
-	"version": "1.0.13",
+	"version": "1.0.14",
 	"description": "enhancement of ava unit testing",
 	"main": "./AvaTester.js",
 	"exports": {

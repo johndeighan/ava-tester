@@ -11,6 +11,7 @@ import {
 	isInteger,
 	stringToArray,
 	} from '@jdeighan/coffee-utils'
+import {debug} from '@jdeighan/coffee-utils/debug'
 
 # ---------------------------------------------------------------------------
 
@@ -46,11 +47,6 @@ export class AvaTester
 	setWhichTest: (testName) ->
 		@whichTest = testName
 		return
-
-	# ........................................................................
-
-	transformValue: (input) ->
-		return input
 
 	# ........................................................................
 
@@ -137,31 +133,41 @@ export class AvaTester
 
 	test: (lineNum, input, expected) ->
 
+		debug "enter AvaTester.test()"
 		if not @testing || (@maxLineNum && (lineNum > @maxLineNum))
+			debug "return immediately"
 			return
 
 		assert isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer"
 
 		lineNum = @getLineNum(lineNum)   # corrects for duplicates
 		try
-			got = @normalize(@transformValue(input))
+			got = @transformValue(input)
+			if isString(got)
+				got = @normalize(got)
 			got_error = false
+			debug got, "GOT:"
 		catch err
 			got_error = true
-		expected = @normalize(expected)
+			debug "got ERROR"
+
+		if isString(expected)
+			expected = @normalize(expected)
 
 		if @justshow
 			say "line #{lineNum}"
 			if got_error
 				say "GOT ERROR"
 			else
-				say result, "GOT:"
+				say got, "GOT:"
 			say expected, "EXPECTED:"
+			debug "return = justshow set"
 			return
 
 		# --- We need to save this here because in the tests themselves,
 		#     'this' won't be correct
 		whichTest = @whichTest
+		debug "whichTest = #{whichTest}"
 
 		if lineNum < 0
 			test.only "line #{lineNum}", (t) ->
@@ -170,7 +176,13 @@ export class AvaTester
 		else
 			test "line #{lineNum}", (t) ->
 				t[whichTest] got, expected
+		debug "return from AvaTester.test()"
 		return
+
+	# ........................................................................
+
+	transformValue: (input) ->
+		return input
 
 	# ........................................................................
 

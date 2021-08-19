@@ -15,6 +15,10 @@ import {
   stringToArray
 } from '@jdeighan/coffee-utils';
 
+import {
+  debug
+} from '@jdeighan/coffee-utils/debug';
+
 // ---------------------------------------------------------------------------
 export var AvaTester = class AvaTester {
   constructor(whichTest = 'deepEqual', fulltest = false) {
@@ -44,11 +48,6 @@ export var AvaTester = class AvaTester {
   // ........................................................................
   setWhichTest(testName) {
     this.whichTest = testName;
-  }
-
-  // ........................................................................
-  transformValue(input) {
-    return input;
   }
 
   // ........................................................................
@@ -152,32 +151,43 @@ export var AvaTester = class AvaTester {
   // ........................................................................
   test(lineNum, input, expected) {
     var err, got, got_error, whichTest;
+    debug("enter AvaTester.test()");
     if (!this.testing || (this.maxLineNum && (lineNum > this.maxLineNum))) {
+      debug("return immediately");
       return;
     }
     assert(isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer");
     lineNum = this.getLineNum(lineNum); // corrects for duplicates
     try {
-      got = this.normalize(this.transformValue(input));
+      got = this.transformValue(input);
+      if (isString(got)) {
+        got = this.normalize(got);
+      }
       got_error = false;
+      debug(got, "GOT:");
     } catch (error1) {
       err = error1;
       got_error = true;
+      debug("got ERROR");
     }
-    expected = this.normalize(expected);
+    if (isString(expected)) {
+      expected = this.normalize(expected);
+    }
     if (this.justshow) {
       say(`line ${lineNum}`);
       if (got_error) {
         say("GOT ERROR");
       } else {
-        say(result, "GOT:");
+        say(got, "GOT:");
       }
       say(expected, "EXPECTED:");
+      debug("return = justshow set");
       return;
     }
     // --- We need to save this here because in the tests themselves,
     //     'this' won't be correct
     whichTest = this.whichTest;
+    debug(`whichTest = ${whichTest}`);
     if (lineNum < 0) {
       test.only(`line ${lineNum}`, function(t) {
         return t[whichTest](got, expected);
@@ -188,6 +198,12 @@ export var AvaTester = class AvaTester {
         return t[whichTest](got, expected);
       });
     }
+    debug("return from AvaTester.test()");
+  }
+
+  // ........................................................................
+  transformValue(input) {
+    return input;
   }
 
   // ........................................................................

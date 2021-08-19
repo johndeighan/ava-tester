@@ -16,7 +16,9 @@ import {
 } from '@jdeighan/coffee-utils';
 
 import {
-  debug
+  debug,
+  debugging,
+  setDebugging
 } from '@jdeighan/coffee-utils/debug';
 
 // ---------------------------------------------------------------------------
@@ -150,10 +152,18 @@ export var AvaTester = class AvaTester {
 
   // ........................................................................
   test(lineNum, input, expected) {
-    var err, errMsg, got, whichTest;
+    var err, errMsg, got, saveDebugging, whichTest;
+    saveDebugging = undef;
+    if (lineNum < -100000) {
+      saveDebugging = debugging;
+      setDebugging(true);
+    }
     debug("enter AvaTester.test()");
     if (!this.testing || (this.maxLineNum && (lineNum > this.maxLineNum))) {
       debug("return immediately");
+      if (saveDebugging != null) {
+        setDebugging(saveDebugging);
+      }
       return;
     }
     assert(isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer");
@@ -182,6 +192,9 @@ export var AvaTester = class AvaTester {
       }
       say(expected, "EXPECTED:");
       debug("return = justshow set");
+      if (saveDebugging != null) {
+        setDebugging(saveDebugging);
+      }
       return;
     }
     // --- We need to save this here because in the tests themselves,
@@ -199,6 +212,9 @@ export var AvaTester = class AvaTester {
       });
     }
     debug("return from AvaTester.test()");
+    if (saveDebugging != null) {
+      setDebugging(saveDebugging);
+    }
   }
 
   // ........................................................................

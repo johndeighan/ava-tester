@@ -11,7 +11,7 @@ import {
 	isInteger,
 	stringToArray,
 	} from '@jdeighan/coffee-utils'
-import {debug} from '@jdeighan/coffee-utils/debug'
+import {debug, debugging, setDebugging} from '@jdeighan/coffee-utils/debug'
 
 # ---------------------------------------------------------------------------
 
@@ -133,9 +133,15 @@ export class AvaTester
 
 	test: (lineNum, input, expected) ->
 
+		saveDebugging = undef
+		if lineNum < -100000
+			saveDebugging = debugging
+			setDebugging(true)
+
 		debug "enter AvaTester.test()"
 		if not @testing || (@maxLineNum && (lineNum > @maxLineNum))
 			debug "return immediately"
+			if saveDebugging? then setDebugging(saveDebugging)
 			return
 
 		assert isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer"
@@ -162,6 +168,7 @@ export class AvaTester
 				say got, "GOT:"
 			say expected, "EXPECTED:"
 			debug "return = justshow set"
+			if saveDebugging? then setDebugging(saveDebugging)
 			return
 
 		# --- We need to save this here because in the tests themselves,
@@ -177,6 +184,7 @@ export class AvaTester
 			test "line #{lineNum}", (t) ->
 				t[whichTest] got, expected
 		debug "return from AvaTester.test()"
+		if saveDebugging? then setDebugging(saveDebugging)
 		return
 
 	# ........................................................................

@@ -141,23 +141,23 @@ export class AvaTester
 		assert isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer"
 
 		lineNum = @getLineNum(lineNum)   # corrects for duplicates
+		errMsg = undef
 		try
 			got = @transformValue(input)
 			if isString(got)
 				got = @normalize(got)
-			got_error = false
 			debug got, "GOT:"
 		catch err
-			got_error = true
-			debug "got ERROR"
+			errMsg = err.message || 'UNKNOWN ERROR'
+			debug "got ERROR: #{errMsg}"
 
 		if isString(expected)
 			expected = @normalize(expected)
 
 		if @justshow
 			say "line #{lineNum}"
-			if got_error
-				say "GOT ERROR"
+			if errMsg
+				say "GOT ERROR #{errMsg}"
 			else
 				say got, "GOT:"
 			say expected, "EXPECTED:"

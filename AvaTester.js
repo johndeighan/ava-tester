@@ -150,7 +150,7 @@ export var AvaTester = class AvaTester {
 
   // ........................................................................
   test(lineNum, input, expected) {
-    var err, got, got_error, whichTest;
+    var err, errMsg, got, whichTest;
     debug("enter AvaTester.test()");
     if (!this.testing || (this.maxLineNum && (lineNum > this.maxLineNum))) {
       debug("return immediately");
@@ -158,25 +158,25 @@ export var AvaTester = class AvaTester {
     }
     assert(isInteger(lineNum), "AvaTester.test(): arg 1 must be an integer");
     lineNum = this.getLineNum(lineNum); // corrects for duplicates
+    errMsg = undef;
     try {
       got = this.transformValue(input);
       if (isString(got)) {
         got = this.normalize(got);
       }
-      got_error = false;
       debug(got, "GOT:");
     } catch (error1) {
       err = error1;
-      got_error = true;
-      debug("got ERROR");
+      errMsg = err.message || 'UNKNOWN ERROR';
+      debug(`got ERROR: ${errMsg}`);
     }
     if (isString(expected)) {
       expected = this.normalize(expected);
     }
     if (this.justshow) {
       say(`line ${lineNum}`);
-      if (got_error) {
-        say("GOT ERROR");
+      if (errMsg) {
+        say(`GOT ERROR ${errMsg}`);
       } else {
         say(got, "GOT:");
       }

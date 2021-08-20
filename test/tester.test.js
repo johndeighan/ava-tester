@@ -3,8 +3,12 @@
 var CapTester, capTester, lItems, tester;
 
 import {
+  pass
+} from '@jdeighan/coffee-utils';
+
+import {
   AvaTester
-} from '../AvaTester.js';
+} from '@jdeighan/ava-tester';
 
 tester = new AvaTester();
 
@@ -31,7 +35,8 @@ tester.same(16, lItems, lItems);
 // --- Duplicate line # should not be an error
 tester.notequal(11, 'xxx', 'xxxx');
 
-// --- Test creating custom tester -------------------------
+// ---------------------------------------------------------------------------
+// --- Test creating custom tester
 CapTester = class CapTester extends AvaTester {
   transformValue(input) {
     return input.toUpperCase();
@@ -47,7 +52,8 @@ capTester.equal(27, 'ABC', 'ABC');
 
 capTester.notequal(28, 'abc', 'abc');
 
-// --- Test string normalization --------------------------
+// ---------------------------------------------------------------------------
+// --- Test string normalization
 tester.equal(31, `line 1
 
 line     2
@@ -55,3 +61,13 @@ line     2
 line 3`, `line 1
 line 2
 line 3`);
+
+// ---------------------------------------------------------------------------
+// Test if negative line numbers generate error if env var FINALTEST is set
+process.env.FINALTEST = 'yes';
+
+tester.fails(56, function() {
+  return tester.equal(-99, 2, 2);
+});
+
+delete process.env.FINALTEST;

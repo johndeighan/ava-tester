@@ -6,6 +6,7 @@ import test from 'ava'
 import {
 	undef,
 	say,
+	error,
 	isString,
 	isFunction,
 	isInteger,
@@ -132,6 +133,9 @@ export class AvaTester
 	# ........................................................................
 
 	test: (lineNum, input, expected) ->
+
+		if (lineNum < 0) && process.env.FINALTEST
+			error "Negative line numbers not allowed in FINALTEST"
 
 		saveDebugging = undef
 		if lineNum < -100000

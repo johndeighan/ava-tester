@@ -9,6 +9,7 @@ import test from 'ava';
 import {
   undef,
   say,
+  error,
   isString,
   isFunction,
   isInteger,
@@ -153,6 +154,9 @@ export var AvaTester = class AvaTester {
   // ........................................................................
   test(lineNum, input, expected) {
     var err, errMsg, got, saveDebugging, whichTest;
+    if ((lineNum < 0) && process.env.FINALTEST) {
+      error("Negative line numbers not allowed in FINALTEST");
+    }
     saveDebugging = undef;
     if (lineNum < -100000) {
       saveDebugging = debugging;

@@ -4,13 +4,8 @@ import {strict as assert} from 'assert'
 import test from 'ava'
 
 import {
-	undef,
-	say,
-	error,
-	isString,
-	isFunction,
-	isInteger,
-	stringToArray,
+	undef, say, error, stringToArray,
+	isString, isFunction, isInteger, isArray,
 	} from '@jdeighan/coffee-utils'
 import {debug, debugging, setDebugging} from '@jdeighan/coffee-utils/debug'
 
@@ -113,6 +108,24 @@ export class AvaTester
 			ok = false
 		@setWhichTest 'truthy'
 		@test lineNum, ok, expected
+
+	# ........................................................................
+
+	same_list: (lineNum, list, expected) ->
+		assert not list? || isArray(list), "AvaTester: not an array"
+		assert not expected? || isArray(expected), "AvaTester: expected is not an array"
+
+		@setWhichTest 'deepEqual'
+		@test lineNum, list.sort(), expected.sort()
+
+	# ........................................................................
+
+	not_same_list: (lineNum, list, expected) ->
+		assert not list? || isArray(list), "AvaTester: not an array"
+		assert not expected? || isArray(expected), "AvaTester: expected is not an array"
+
+		@setWhichTest 'notDeepEqual'
+		@test lineNum, list.sort(), expected.sort()
 
 	# ........................................................................
 

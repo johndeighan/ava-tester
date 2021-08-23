@@ -49,11 +49,27 @@ tester.equal 31, """
 		"""
 
 # ---------------------------------------------------------------------------
+# --- Test same_list
+
+tester.same_list 54, [1,2,3], [1,2,3]
+tester.same_list 55, [2,1,3], [1,2,3]
+tester.same_list 56, ['a','b','c'], ['a','b','c']
+tester.same_list 57, ['b','a','c'], ['a','b','c']
+
+# ---------------------------------------------------------------------------
+# --- Test not_same_list
+
+tester.not_same_list 62, [1,2,3], [1,2]
+tester.not_same_list 63, [2,1,3], [1,2]
+tester.not_same_list 64, ['a','b','c'], ['a','b']
+tester.not_same_list 65, ['b','a','c'], ['a','b']
+
+# ---------------------------------------------------------------------------
 # Test if negative line numbers generate error if env var FINALTEST is set
 
 process.env.FINALTEST = 'yes'
 
-tester.fails 56, () ->
+tester.fails 72, () ->
 	tester.equal -99, 2, 2
 
 delete process.env.FINALTEST

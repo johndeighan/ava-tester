@@ -10,10 +10,11 @@ import {
   undef,
   say,
   error,
+  stringToArray,
   isString,
   isFunction,
   isInteger,
-  stringToArray
+  isArray
 } from '@jdeighan/coffee-utils';
 
 import {
@@ -123,6 +124,22 @@ export var AvaTester = class AvaTester {
     }
     this.setWhichTest('truthy');
     return this.test(lineNum, ok, expected);
+  }
+
+  // ........................................................................
+  same_list(lineNum, list, expected) {
+    assert((list == null) || isArray(list), "AvaTester: not an array");
+    assert((expected == null) || isArray(expected), "AvaTester: expected is not an array");
+    this.setWhichTest('deepEqual');
+    return this.test(lineNum, list.sort(), expected.sort());
+  }
+
+  // ........................................................................
+  not_same_list(lineNum, list, expected) {
+    assert((list == null) || isArray(list), "AvaTester: not an array");
+    assert((expected == null) || isArray(expected), "AvaTester: expected is not an array");
+    this.setWhichTest('notDeepEqual');
+    return this.test(lineNum, list.sort(), expected.sort());
   }
 
   // ........................................................................

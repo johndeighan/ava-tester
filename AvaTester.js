@@ -36,17 +36,17 @@ export var AvaTester = class AvaTester {
 
   // ........................................................................
   justshow(flag) {
-    return this.justshow = flag;
+    this.justshow = flag;
   }
 
   // ........................................................................
   just_show(flag) {
-    return this.justshow = flag;
+    this.justshow = flag;
   }
 
   // ........................................................................
   setMaxLineNum(n) {
-    return this.maxLineNum = n;
+    this.maxLineNum = n;
   }
 
   // ........................................................................
@@ -57,13 +57,13 @@ export var AvaTester = class AvaTester {
   // ........................................................................
   truthy(lineNum, input, expected) {
     this.setWhichTest('truthy');
-    return this.test(lineNum, input, expected);
+    this.test(lineNum, input, expected);
   }
 
   // ........................................................................
   falsy(lineNum, input, expected) {
     this.setWhichTest('falsy');
-    return this.test(lineNum, input, expected);
+    this.test(lineNum, input, expected);
   }
 
   // ........................................................................
@@ -73,25 +73,25 @@ export var AvaTester = class AvaTester {
     } else {
       this.setWhichTest('deepEqual');
     }
-    return this.test(lineNum, input, expected);
+    this.test(lineNum, input, expected);
   }
 
   // ........................................................................
   notequal(lineNum, input, expected) {
     this.setWhichTest('notDeepEqual');
-    return this.test(lineNum, input, expected);
+    this.test(lineNum, input, expected);
   }
 
   // ........................................................................
   same(lineNum, input, expected) {
     this.setWhichTest('is');
-    return this.test(lineNum, input, expected);
+    this.test(lineNum, input, expected);
   }
 
   // ........................................................................
   different(lineNum, input, expected) {
     this.setWhichTest('not');
-    return this.test(lineNum, input, expected);
+    this.test(lineNum, input, expected);
   }
 
   // ........................................................................
@@ -107,7 +107,7 @@ export var AvaTester = class AvaTester {
       ok = false;
     }
     this.setWhichTest('falsy');
-    return this.test(lineNum, ok, expected);
+    this.test(lineNum, ok, expected);
   }
 
   // ........................................................................
@@ -123,7 +123,7 @@ export var AvaTester = class AvaTester {
       ok = false;
     }
     this.setWhichTest('truthy');
-    return this.test(lineNum, ok, expected);
+    this.test(lineNum, ok, expected);
   }
 
   // ........................................................................
@@ -131,7 +131,7 @@ export var AvaTester = class AvaTester {
     assert((list == null) || isArray(list), "AvaTester: not an array");
     assert((expected == null) || isArray(expected), "AvaTester: expected is not an array");
     this.setWhichTest('deepEqual');
-    return this.test(lineNum, list.sort(), expected.sort());
+    this.test(lineNum, list.sort(), expected.sort());
   }
 
   // ........................................................................
@@ -139,7 +139,7 @@ export var AvaTester = class AvaTester {
     assert((list == null) || isArray(list), "AvaTester: not an array");
     assert((expected == null) || isArray(expected), "AvaTester: expected is not an array");
     this.setWhichTest('notDeepEqual');
-    return this.test(lineNum, list.sort(), expected.sort());
+    this.test(lineNum, list.sort(), expected.sort());
   }
 
   // ........................................................................
@@ -171,6 +171,7 @@ export var AvaTester = class AvaTester {
   // ........................................................................
   test(lineNum, input, expected) {
     var err, errMsg, got, saveDebugging, whichTest;
+    debug("enter AvaTester.test()");
     this.lineNum = lineNum; // set an object property
     if ((lineNum < 0) && process.env.FINALTEST) {
       error("Negative line numbers not allowed in FINALTEST");
@@ -180,7 +181,6 @@ export var AvaTester = class AvaTester {
       saveDebugging = debugging;
       setDebugging(true);
     }
-    debug("enter AvaTester.test()");
     if (!this.testing || (this.maxLineNum && (lineNum > this.maxLineNum))) {
       debug("return immediately");
       if (saveDebugging != null) {
@@ -213,7 +213,7 @@ export var AvaTester = class AvaTester {
         say(got, "GOT:");
       }
       say(expected, "EXPECTED:");
-      debug("return = justshow set");
+      debug("return - justshow set");
       if (saveDebugging != null) {
         setDebugging(saveDebugging);
       }

@@ -25,18 +25,21 @@ export class AvaTester
 	justshow: (flag) ->
 
 		@justshow = flag
+		return
 
 	# ........................................................................
 
 	just_show: (flag) ->
 
 		@justshow = flag
+		return
 
 	# ........................................................................
 
 	setMaxLineNum: (n) ->
 
 		@maxLineNum = n
+		return
 
 	# ........................................................................
 
@@ -49,12 +52,14 @@ export class AvaTester
 	truthy: (lineNum, input, expected) ->
 		@setWhichTest 'truthy'
 		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 
 	falsy: (lineNum, input, expected) ->
 		@setWhichTest 'falsy'
 		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 
@@ -64,24 +69,28 @@ export class AvaTester
 		else
 			@setWhichTest 'deepEqual'
 		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 
 	notequal: (lineNum, input, expected) ->
 		@setWhichTest 'notDeepEqual'
 		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 
 	same: (lineNum, input, expected) ->
 		@setWhichTest 'is'
 		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 
 	different: (lineNum, input, expected) ->
 		@setWhichTest 'not'
 		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 
@@ -95,6 +104,7 @@ export class AvaTester
 			ok = false
 		@setWhichTest 'falsy'
 		@test lineNum, ok, expected
+		return
 
 	# ........................................................................
 
@@ -108,6 +118,7 @@ export class AvaTester
 			ok = false
 		@setWhichTest 'truthy'
 		@test lineNum, ok, expected
+		return
 
 	# ........................................................................
 
@@ -117,6 +128,7 @@ export class AvaTester
 
 		@setWhichTest 'deepEqual'
 		@test lineNum, list.sort(), expected.sort()
+		return
 
 	# ........................................................................
 
@@ -126,6 +138,7 @@ export class AvaTester
 
 		@setWhichTest 'notDeepEqual'
 		@test lineNum, list.sort(), expected.sort()
+		return
 
 	# ........................................................................
 
@@ -147,6 +160,7 @@ export class AvaTester
 
 	test: (lineNum, input, expected) ->
 
+		debug "enter AvaTester.test()"
 		@lineNum = lineNum    # set an object property
 
 		if (lineNum < 0) && process.env.FINALTEST
@@ -157,7 +171,6 @@ export class AvaTester
 			saveDebugging = debugging
 			setDebugging(true)
 
-		debug "enter AvaTester.test()"
 		if not @testing || (@maxLineNum && (lineNum > @maxLineNum))
 			debug "return immediately"
 			if saveDebugging? then setDebugging(saveDebugging)
@@ -186,7 +199,7 @@ export class AvaTester
 			else
 				say got, "GOT:"
 			say expected, "EXPECTED:"
-			debug "return = justshow set"
+			debug "return - justshow set"
 			if saveDebugging? then setDebugging(saveDebugging)
 			return
 

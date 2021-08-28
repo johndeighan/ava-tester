@@ -171,6 +171,7 @@ export var AvaTester = class AvaTester {
   // ........................................................................
   test(lineNum, input, expected) {
     var err, errMsg, got, saveDebugging, whichTest;
+    this.lineNum = lineNum; // set an object property
     if ((lineNum < 0) && process.env.FINALTEST) {
       error("Negative line numbers not allowed in FINALTEST");
     }

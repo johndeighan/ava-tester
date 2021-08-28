@@ -147,6 +147,8 @@ export class AvaTester
 
 	test: (lineNum, input, expected) ->
 
+		@lineNum = lineNum    # set an object property
+
 		if (lineNum < 0) && process.env.FINALTEST
 			error "Negative line numbers not allowed in FINALTEST"
 

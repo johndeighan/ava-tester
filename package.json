@@ -36,7 +36,7 @@
 	},
 	"homepage": "https://github.com/johndeighan/ava-tester#readme",
 	"dependencies": {
-		"@jdeighan/coffee-utils": "^1.1.36",
+		"@jdeighan/coffee-utils": "^1.1.37",
 		"ava": "^3.15.0",
 		"cross-env": "^7.0.3"
 	}

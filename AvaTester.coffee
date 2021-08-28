@@ -210,11 +210,11 @@ export class AvaTester
 
 		if lineNum < 0
 			test.only "line #{lineNum}", (t) ->
-				t[whichTest] got, expected
+				t[whichTest](got, expected)
 			@testing = false
 		else
 			test "line #{lineNum}", (t) ->
-				t[whichTest] got, expected
+				t[whichTest](got, expected)
 		debug "return from AvaTester.test()"
 		if saveDebugging? then setDebugging(saveDebugging)
 		return
